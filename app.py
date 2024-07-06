@@ -27,10 +27,23 @@ base_path = os.path.dirname(__file__)
 movies_dict_path = os.path.join(base_path, 'movie_dict.pkl')
 similarity_path = os.path.join(base_path, 'similarity.pkl')
 
+# # Load data
+# movies_dict = pickle.load(open(movies_dict_path, 'rb'))
+# movies = pd.DataFrame(movies_dict)
+# similarity = pickle.load(open(similarity_path, 'rb'))
+
 # Load data
-movies_dict = pickle.load(open(movies_dict_path, 'rb'))
-movies = pd.DataFrame(movies_dict)
-similarity = pickle.load(open(similarity_path, 'rb'))
+try:
+    with open(movies_dict_path, 'rb') as f_movies_dict:
+        movies_dict = pickle.load(f_movies_dict)
+    movies = pd.DataFrame(movies_dict)
+
+    with open(similarity_path, 'rb') as f_similarity:
+        similarity = pickle.load(f_similarity)
+
+except FileNotFoundError as e:
+    print(f"FileNotFoundError: {e}")
+    # Handle the error or raise it further as needed
 
 # movies_dict=pickle.load(open(r'C:\Users\shash\OneDrive\Desktop\movie recommender system\movie_dict.pkl','rb'))
 # movies=pd.DataFrame(movies_dict)
