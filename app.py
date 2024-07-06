@@ -2,6 +2,7 @@ import streamlit as st
 import pickle
 import pandas as pd
 import requests
+import os
 def fetch_poster(movie_id):
     url = "https://api.themoviedb.org/3/movie/{}?api_key=8265bd1679663a7ea12ac168da84d2e8&language=en-US".format(movie_id)
     data = requests.get(url)
@@ -21,9 +22,19 @@ def recommend(movie):
        #fetching poster from API
        recommended_movies_poster.append(fetch_poster(movie_id))
     return recommended_movies, recommended_movies_poster
-movies_dict=pickle.load(open(r'C:\Users\shash\OneDrive\Desktop\movie recommender system\movie_dict.pkl','rb'))
-movies=pd.DataFrame(movies_dict)
-similarity=pickle.load(open(r'C:\Users\shash\OneDrive\Desktop\movie recommender system\similarity.pkl','rb'))
+# Construct paths relative to the script's directory
+base_path = os.path.dirname(__file__)
+movies_dict_path = os.path.join(base_path, 'movie_dict.pkl')
+similarity_path = os.path.join(base_path, 'similarity.pkl')
+
+# Load data
+movies_dict = pickle.load(open(movies_dict_path, 'rb'))
+movies = pd.DataFrame(movies_dict)
+similarity = pickle.load(open(similarity_path, 'rb'))
+
+# movies_dict=pickle.load(open(r'C:\Users\shash\OneDrive\Desktop\movie recommender system\movie_dict.pkl','rb'))
+# movies=pd.DataFrame(movies_dict)
+# similarity=pickle.load(open(r'C:\Users\shash\OneDrive\Desktop\movie recommender system\similarity.pkl','rb'))
 st.title("AI Based Movie Recommender System")
 selected_movie_name=st.selectbox(
     'Select Movie From The Given List',
